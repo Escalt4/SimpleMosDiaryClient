@@ -1,0 +1,141 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bars_color2"
+    tools:context=".view.MainActivity">
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bars_color2" />
+
+
+            <TextView
+                android:id="@+id/textViewTimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Февраль"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/bars_color2"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonWeekDown"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:insetLeft="3dp"
+                    android:insetTop="3dp"
+                    android:insetRight="3dp"
+                    android:insetBottom="3dp"
+                    android:padding="0dp"
+                    android:rotation="180"
+                    app:icon="@drawable/icon_arrow"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="14dp"
+                    app:strokeWidth="0dp" />
+
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@color/bars_color2"
+                    app:tabIndicator="@drawable/rounded_corner"
+                    app:tabIndicatorAnimationMode="elastic"
+                    app:tabIndicatorColor="@color/textColor1"
+                    app:tabIndicatorHeight="50dp"
+                    app:tabSelectedTextColor="@color/textColor2" />
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonWeekUp"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:insetLeft="3dp"
+                    android:insetTop="3dp"
+                    android:insetRight="3dp"
+                    android:insetBottom="3dp"
+                    android:padding="0dp"
+                    app:icon="@drawable/icon_arrow"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="14dp"
+                    app:strokeWidth="0dp" />
+
+            </LinearLayout>
+
+            <ru.example.simplemosdiaryclient.view.OnlyVerticalSwipeRefreshLayout
+                android:id="@+id/swipeContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:textSize="22sp" />
+
+
+            </ru.example.simplemosdiaryclient.view.OnlyVerticalSwipeRefreshLayout>
+
+
+            <!--            <LinearLayout-->
+            <!--                android:id="@+id/linearLayout3"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:gravity="right"-->
+            <!--                android:orientation="horizontal">-->
+
+            <!--                <Button-->
+            <!--                    android:id="@+id/buttonToCurrentDate"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="50dp"-->
+            <!--                    android:enabled="false"-->
+            <!--                    android:gravity="center"-->
+            <!--                    android:insetLeft="6dp"-->
+            <!--                    android:insetRight="6dp"-->
+            <!--                    android:onClick="onClick"-->
+            <!--                    android:text="К текущей дате"-->
+            <!--                    android:textAllCaps="false"-->
+            <!--                    android:textSize="16sp"-->
+            <!--                    app:cornerRadius="25dp" />-->
+
+            <!--            </LinearLayout>-->
+
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

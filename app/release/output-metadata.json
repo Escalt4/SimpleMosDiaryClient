@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "ru.example.simplemosdiaryclient",
+  "variantName": "release",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 203,
+      "versionName": "2.0.3",
+      "outputFile": "SimpleMosDiaryClient_v2.0.3.apk"
+    }
+  ],
+  "elementType": "File"
+}

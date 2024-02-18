@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="error_color">#cc1b23</color>
+    <color name="done_color">#1fb24c</color>
+
+    <color name="wi_background">#1c1c1c</color>
+    <color name="bars_color">#212121</color>
+    <color name="bars_color3">#676767</color>
+    <color name="bars_color_pressed">#2b2b2b</color>
+    <color name="bars_color2">#262626</color>
+    <color name="line">#676767</color>
+
+    <color name="icon_warnings_color">#212121</color>
+
+    <color name="firm">#a2a2a2</color>
+
+    <color name="firm_red">#a25151</color>
+
+
+    <color name="legend_background">#212121</color>
+
+    <color name="progressGradient">#333333</color>
+
+    <color name="background">#181818</color>
+
+
+    <color name="textColor0">#a3a3a3</color>
+    <color name="textColor1">#ffffff</color>
+    <color name="textColor2">#000000</color>
+</resources>
