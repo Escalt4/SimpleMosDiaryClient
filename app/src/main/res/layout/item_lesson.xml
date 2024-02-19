@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -20,9 +21,17 @@
         <variable
             name="lessonInfo2"
             type="String" />
+
+        <variable
+            name="absenceReasonId"
+            type="Integer" />
+
+        <variable
+            name="mark"
+            type="String" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -40,12 +49,13 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp">
+                android:paddingVertical="15dp">
 
                 <TextView
                     android:id="@+id/textViewNumder1"
                     android:layout_width="50dp"
                     android:layout_height="0dp"
+                    android:layout_marginStart="15dp"
                     android:gravity="center"
                     android:text="@{lessonNum.toString()}"
                     android:textColor="?attr/colorPrimary"
@@ -60,7 +70,7 @@
                     android:id="@+id/textViewSubject1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
+                    android:layout_marginHorizontal="15dp"
                     android:ellipsize="end"
                     android:gravity="start"
                     android:maxLines="2"
@@ -70,7 +80,7 @@
                     android:textSize="16dp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/textViewInfo11"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewAbsenceMaterialCardView"
                     app:layout_constraintStart_toEndOf="@+id/textViewNumder1"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -79,13 +89,16 @@
                     android:id="@+id/textViewInfo11"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:gravity="center_vertical"
+                    android:layout_marginHorizontal="15dp"
                     android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
                     android:text="@{lessonInfo}"
                     android:textSize="14dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:minLines="1"
                     app:layout_constraintBottom_toTopOf="@+id/textViewInfo21"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewAbsenceMaterialCardView"
                     app:layout_constraintStart_toEndOf="@+id/textViewNumder1"
                     app:layout_constraintTop_toBottomOf="@+id/textViewSubject1" />
 
@@ -94,17 +107,47 @@
                     android:id="@+id/textViewInfo21"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="1dp"
                     android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:minLines="1"
                     android:gravity="center_vertical"
                     android:text="@{lessonInfo2}"
                     android:textSize="14dp"
-                    android:layout_marginTop="1dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewAbsenceMaterialCardView"
                     app:layout_constraintStart_toEndOf="@+id/textViewNumder1"
                     app:layout_constraintTop_toBottomOf="@+id/textViewInfo11" />
 
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/textViewAbsenceMaterialCardView"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="15dp"
+                    android:visibility="@{absenceReasonId == null &amp;&amp; mark == null  ? View.GONE : View.VISIBLE}"
+                    app:cardBackgroundColor="@color/bars_color"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:strokeColor="@color/textColor1"
+                    app:strokeWidth="1dp">
+
+                    <TextView
+                        android:id="@+id/textViewAbsence"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text='@{mark == null ? "Н" : mark}'
+                        android:textColor="@color/textColor1"
+                        android:textSize="18dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </com.google.android.material.card.MaterialCardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

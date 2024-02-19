@@ -50,15 +50,19 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.MyViewHolder> 
             binding.setLessonInfo(
                     lesson.getTimeStartString() + " - " +
                             lesson.getTimeEndString() + "  |  " +
-                            lesson.getGroupName().substring(0,lesson.getGroupName().length()-lesson.getSubject().length()));
+                            lesson.getTeacherLastName() + " " +
+                            lesson.getTeacherFirstName().substring(0, 1) + "." +
+                            lesson.getTeacherMiddleName().substring(0, 1) + ".");
 
             binding.setLessonInfo2(
                     lesson.getCabinetNum() + "  |  " +
-                            lesson.getTeacherLastName() + " " +
-                            lesson.getTeacherFirstName().substring(0, 1) + "." +
-                            lesson.getTeacherMiddleName().substring(0, 1)+ ".");
+                            lesson.getGroupName().substring(0, lesson.getGroupName().length() - lesson.getSubject().length()));
 
             binding.setLessonNum(lesson.getLessonNum());
+
+            binding.setAbsenceReasonId(lesson.getAbsenceReasonId() == null ? null : lesson.getAbsenceReasonId().intValue());
+
+            binding.setMark(lesson.getMarkValue() == null ? null : String.valueOf(lesson.getMarkValue().intValue()));
 
             binding.executePendingBindings();
         }

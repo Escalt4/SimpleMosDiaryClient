@@ -7,9 +7,10 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import ru.example.simplemosdiaryclient.database.database_entity.Lesson;
+import ru.example.simplemosdiaryclient.database.database_entity.Mark;
 
 
-@Database(entities = {Lesson.class}, version = 3, exportSchema = false)
+@Database(entities = {Lesson.class}, version = 4, exportSchema = false)
 public abstract class SimpleMosDiaryClientDatabase extends RoomDatabase {
     public abstract SimpleMosDiaryClientDao simpleMosDiaryClientDao();
 

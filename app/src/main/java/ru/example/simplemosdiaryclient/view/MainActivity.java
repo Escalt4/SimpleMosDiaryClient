@@ -22,12 +22,14 @@ import ru.example.simplemosdiaryclient.R;
 import ru.example.simplemosdiaryclient.database.SimpleMosDiaryClientDatabase;
 import ru.example.simplemosdiaryclient.network.ApiService;
 import ru.example.simplemosdiaryclient.network.RetrofitClient;
+import ru.example.simplemosdiaryclient.network.network_entity.Mark;
 import ru.example.simplemosdiaryclient.network.network_entity.Schedule;
 import ru.example.simplemosdiaryclient.network.network_entity.ShortSchedule;
 import ru.example.simplemosdiaryclient.network.network_entity.StudentProfile;
 import ru.example.simplemosdiaryclient.network.network_entity.schedule.Activity;
 import ru.example.simplemosdiaryclient.network.network_entity.short_schedule.Lesson;
 import ru.example.simplemosdiaryclient.network.network_entity.short_schedule.ScheduleItem;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -108,7 +110,9 @@ public class MainActivity extends AppCompatActivity {
         ((SwipeRefreshLayout) findViewById(R.id.swipeContainer)).setRefreshing(false);
         if (d != null && !d.isDisposed()) d.dispose();
     }
+
     DataController dataController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,7 +175,6 @@ public class MainActivity extends AppCompatActivity {
         calendar.add(Calendar.DATE, -6);
 
         ((TextView) findViewById(R.id.textViewTimer)).setText(curMonth);
-
         for (int i = 0; i < 6; i++) {
             dayList.add(calendar.get(Calendar.DAY_OF_MONTH));
             dateList.add(timeFormat.format(calendar.getTime()));
@@ -195,11 +198,12 @@ public class MainActivity extends AppCompatActivity {
     Disposable d;
 
     private void requestShortSchedule(List<String> dateList) {
-        if (dateList.size()==0)return;
+        if (dateList.size() == 0) return;
         ((SwipeRefreshLayout) findViewById(R.id.swipeContainer)).setRefreshing(true);
 
         try {
             ApiService apiServiceSchool = RetrofitClient.getSchoolClient().create(ApiService.class);
+            ApiService apiServiceDnevnik = RetrofitClient.getDnevnikClient().create(ApiService.class);
 
             Observable<ShortSchedule> observable0 = apiServiceSchool.getShortSchedule(token, "familymp", studentId, String.join(",", dateList));
             Observable<Schedule> observable1 = apiServiceSchool.getSchedule(token, "familymp", studentId, dateList.get(0));
@@ -209,15 +213,20 @@ public class MainActivity extends AppCompatActivity {
             Observable<Schedule> observable5 = apiServiceSchool.getSchedule(token, "familymp", studentId, dateList.get(4));
             Observable<Schedule> observable6 = apiServiceSchool.getSchedule(token, "familymp", studentId, dateList.get(5));
 
+            SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Observable<List<Mark>> observable00 = apiServiceDnevnik.getMarks(
+                    "auth_token=" + token + "; student_id=" + studentId,
+                    dateList.get(0), dateList.get(5), studentId);
+
             if (d != null && !d.isDisposed()) d.dispose();
 
-            d = Observable.zip(observable0, observable1, observable2, observable3, observable4, observable5, observable6, (response0, response1, response2, response3, response4, response5, response6) -> {
+            d = Observable.zip(observable0, observable1, observable2, observable3, observable4, observable5, observable6, observable00, (response0, response1, response2, response3, response4, response5, response6, response00) -> {
                 List<ru.example.simplemosdiaryclient.database.database_entity.Lesson> lessonList = new ArrayList<>();
 
                 List<ScheduleItem> scheduleItemList0 = response0.getPayload();
                 for (ScheduleItem scheduleItem : scheduleItemList0) {
                     for (Lesson lesson : scheduleItem.getLessons()) {
-                        lessonList.add(new ru.example.simplemosdiaryclient.database.database_entity.Lesson(scheduleItem.getDate(), lesson.getScheduleItemId(), lesson.getSubjectName(), lesson.getGroupName(), lesson.getBeginTime(), lesson.getEndTime()));
+                        lessonList.add(new ru.example.simplemosdiaryclient.database.database_entity.Lesson(scheduleItem.getDate(), lesson.getScheduleItemId(), lesson.getSubjectName(), lesson.getGroupName(), lesson.getBeginTime(), lesson.getEndTime(), lesson.getAbsenceReasonId()));
                     }
                 }
 
@@ -240,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
                         lessonListElem.setTeacherFirstName(activity.getLesson().getTeacher().getFirstName());
                         lessonListElem.setTeacherLastName(activity.getLesson().getTeacher().getLastName());
                         lessonListElem.setTeacherMiddleName(activity.getLesson().getTeacher().getMiddleName());
+                        lessonListElem.setTeacherMiddleName(activity.getLesson().getTeacher().getMiddleName());
                     }
                 }
 
@@ -251,12 +261,22 @@ public class MainActivity extends AppCompatActivity {
                     for (ru.example.simplemosdiaryclient.database.database_entity.Lesson lesson0 : lessonList0) {
                         if (Objects.equals(lesson.getSubject(), lesson0.getSubject()) && Objects.equals(lesson.getCabinetNum(), lesson0.getCabinetNum()) && Objects.equals(lesson.getGroupName(), lesson0.getGroupName()) && Objects.equals(lesson.getTeacherMiddleName(), lesson0.getTeacherMiddleName()) && Objects.equals(lesson.getTeacherFirstName(), lesson0.getTeacherFirstName()) && Objects.equals(lesson.getTeacherLastName(), lesson0.getTeacherLastName()) && Objects.equals(lesson.getLessonDate(), lesson0.getLessonDate())) {
                             lesson0.setLessonNum(Math.max(lesson0.getLessonNum(), lesson.getLessonNum()) / 2);
+                            lesson0.setScheduleItemId2(lesson.getScheduleItemId());
                             find = true;
                             break;
                         }
                     }
 
                     if (!find) lessonList0.add(lesson);
+                }
+
+                List<ru.example.simplemosdiaryclient.database.database_entity.Mark> markList = new ArrayList<>();
+
+                List<Mark> markList0 = response00;
+                for (Mark mark : markList0) {
+                    ru.example.simplemosdiaryclient.database.database_entity.Lesson lessonListElem = lessonList.stream().filter(obj -> obj.getScheduleItemId().equals(mark.getScheduleLessonId())).findFirst().orElse(null);
+                    if (lessonListElem != null)
+                        lessonListElem.setMarkValue(mark.getValues().get(0).getGrade().getFive());
                 }
 
                 Executors.newSingleThreadExecutor().execute(() -> {
@@ -336,8 +356,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
 
     @Override

@@ -12,8 +12,8 @@ public class Lesson {
     private String lessonDate;
 
     @PrimaryKey
-    @SerializedName("schedule_item_id")
     private Long scheduleItemId;
+    private Long scheduleItemId2;
 
     private String subject;
     private String cabinetNum;
@@ -24,18 +24,46 @@ public class Lesson {
     private String teacherFirstName;
     private String teacherMiddleName;
 
+    private Long absenceReasonId;
 
     private String timeStartString;
 
     private String timeEndString;
 
-    public Lesson(String lessonDate, Long scheduleItemId, String subject, String groupName, String timeStartString, String timeEndString) {
+    private Double markValue;
+
+    public Lesson(String lessonDate, Long scheduleItemId, String subject, String groupName, String timeStartString, String timeEndString,Long absenceReasonId) {
         this.lessonDate = lessonDate;
         this.scheduleItemId = scheduleItemId;
         this.subject = subject;
         this.groupName = groupName;
         this.timeStartString = timeStartString;
         this.timeEndString = timeEndString;
+        this.absenceReasonId = absenceReasonId;
+    }
+
+    public Double getMarkValue() {
+        return markValue;
+    }
+
+    public void setMarkValue(Double markValue) {
+        this.markValue = markValue;
+    }
+
+    public Long getAbsenceReasonId() {
+        return absenceReasonId;
+    }
+
+    public void setAbsenceReasonId(Long absenceReasonId) {
+        this.absenceReasonId = absenceReasonId;
+    }
+
+    public Long getScheduleItemId2() {
+        return scheduleItemId2;
+    }
+
+    public void setScheduleItemId2(Long scheduleItemId2) {
+        this.scheduleItemId2 = scheduleItemId2;
     }
 
     public String getLessonDate() {
