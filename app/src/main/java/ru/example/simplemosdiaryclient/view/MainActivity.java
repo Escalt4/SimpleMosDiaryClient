@@ -1,20 +1,26 @@
 package ru.example.simplemosdiaryclient.view;
 
 
+import static androidx.annotation.Dimension.DP;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -55,7 +61,8 @@ public class MainActivity extends AppCompatActivity {
     static final String LOG_TAG = "MyApp";
     static final Integer[] DAYS_OF_WEEK = {6, 0, 1, 2, 3, 4, 5};
     static final Integer[] TABS = {0, 1, 2, 3, 4, 5, 0};
-    static final String[] TABS_NAMES = {"ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"};
+    //    static final String[] TABS_NAMES = {"ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"};
+    static final String[] TABS_NAMES = {"Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"};
     static final String[] MONTHS_NAMES = {"Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"};
     //
     SharedPreferences settings;
@@ -215,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
 
             SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd");
             Observable<List<Mark>> observable00 = apiServiceDnevnik.getMarks(
-                    "auth_token=" + token + "; student_id=" + studentId,
+                    "auth_token=" + token + ";student_id=" + studentId,
                     dateList.get(0), dateList.get(5), studentId);
 
             if (d != null && !d.isDisposed()) d.dispose();
@@ -259,9 +266,11 @@ public class MainActivity extends AppCompatActivity {
                     boolean find = false;
 
                     for (ru.example.simplemosdiaryclient.database.database_entity.Lesson lesson0 : lessonList0) {
-                        if (Objects.equals(lesson.getSubject(), lesson0.getSubject()) && Objects.equals(lesson.getCabinetNum(), lesson0.getCabinetNum()) && Objects.equals(lesson.getGroupName(), lesson0.getGroupName()) && Objects.equals(lesson.getTeacherMiddleName(), lesson0.getTeacherMiddleName()) && Objects.equals(lesson.getTeacherFirstName(), lesson0.getTeacherFirstName()) && Objects.equals(lesson.getTeacherLastName(), lesson0.getTeacherLastName()) && Objects.equals(lesson.getLessonDate(), lesson0.getLessonDate())) {
+                        if (Objects.equals(lesson.getSubject(), lesson0.getSubject()) && Objects.equals(lesson.getCabinetNum(), lesson0.getCabinetNum()) && Objects.equals(lesson.getGroupName(), lesson0.getGroupName()) && Objects.equals(lesson.getTeacherMiddleName(), lesson0.getTeacherMiddleName()) && Objects.equals(lesson.getTeacherFirstName(), lesson0.getTeacherFirstName()) && Objects.equals(lesson.getTeacherLastName(), lesson0.getTeacherLastName()) && Objects.equals(lesson.getLessonDate(), lesson0.getLessonDate()) && Math.abs(lesson.getLessonNum() - lesson0.getLessonNum()) == 1) {
                             lesson0.setLessonNum(Math.max(lesson0.getLessonNum(), lesson.getLessonNum()) / 2);
                             lesson0.setScheduleItemId2(lesson.getScheduleItemId());
+                            lesson0.setTimeStartString(lesson0.getLessonNum() > lesson.getLessonNum() ? lesson.getTimeStartString() : lesson0.getTimeStartString());
+                            lesson0.setTimeEndString(lesson0.getLessonNum() > lesson.getLessonNum() ? lesson0.getTimeEndString() : lesson.getTimeEndString());
                             find = true;
                             break;
                         }
